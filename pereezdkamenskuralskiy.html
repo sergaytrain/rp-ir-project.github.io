@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Автоматическое Слайдшоу</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #f3f4f6;
+        }
+        .text {
+            color: black;
+            
+        }
+        .slideshow-container {
+            position: relative;
+            max-width: 600px;
+            margin: auto;
+            overflow: hidden;
+        }
+        .slides {
+            display: none;
+        }
+        img {
+            width: 100%;
+            height: auto;
+        }
+        .fade {
+            animation: fade 1.5s ease;
+        }
+        @keyframes fade {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+    </style>
+</head>
+<body>
+    
+
+<div class="slideshow-container">
+    <div class="slides fade">
+        <img src="photo1.png" alt="Фото 1">
+    </div>
+    <div class="slides fade">
+        <img src="photo2.png" alt="Фото 2">
+    </div>
+    <div class="slides fade">
+        <img src="photo3.png" alt="Фото 3">
+    </div>
+    <div class="slides fade">
+        <img src="photo4.png" alt="Фото 4">
+    </div>
+    <div class="slides fade">
+        <img src="photo5.png" alt="Фото 5">
+    </div>
+</div>
+
+<script>
+    let slideIndex = 0;
+    
+    function showSlides() {
+        const slides = document.getElementsByClassName("slides");
+        
+        for (let i = 0; i < slides.length; i++) {
+            slides[i].style.display = "none";  
+        }
+
+        slideIndex++;
+        if (slideIndex > slides.length) {
+            slideIndex = 1; 
+        }
+
+        slides[slideIndex - 1].style.display = "block";  
+        setTimeout(showSlides, 3000); // Изменение слайда каждые 3 секунды
+    }
+
+    showSlides(); // Запуск слайдшоу
+</script>
+
+</body>
+</html>

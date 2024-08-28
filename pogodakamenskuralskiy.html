@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Погода в Каменск-Уральском</title>
+    <style>
+        body {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            font-family: Arial, sans-serif;
+            transition: background 0.5s;
+            color: white;
+        }
+
+        .weather-container {
+            text-align: center;
+            border: 2px solid white;
+            border-radius: 20px;
+            padding: 20px;
+            background: rgba(0, 0, 0, 0.5);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+        }
+
+        img {
+            width: 150px;
+            height: auto;
+            margin: 10px 0;
+        }
+    </style>
+</head>
+<body>
+
+<div class="weather-container">
+    <h1>Погода в Каменск-Уральском</h1>
+    <img id="weather-icon" src="" alt="Погода">
+    <p id="weather-description"></p>
+    <p id="temperature"></p>
+</div>
+
+<script>
+    const apiKey = 'cd0d7ec8d086c6aa9f7698eafa163fdb'; // Замените на ваш API ключ
+    const city = 'Каменск-Уральский';
+    const weatherContainer = document.querySelector('.weather-container');
+    const weatherIcon = document.getElementById('weather-icon');
+    const weatherDescription = document.getElementById('weather-description');
+    const temperature = document.getElementById('temperature');
+
+    function updateWeather() {
+        fetch(`https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}&units=metric`)
+            .then(response => response.json())
+            .then(data => {
+                const temp = Math.round(data.main.temp);
+                const weather = data.weather[0].main.toLowerCase();
+                updateUI(temp, weather);
+            })
+            .catch(err => console.error(err));
+    }
+
+    function updateUI(temp, weather) {
+        temperature.innerHTML = `Температура: ${temp}°C`;
+        weatherDescription.innerHTML = `Погодные условия: ${weather}`;
+
+        if (weather === 'clear') {
+            document.body.style.background = 'linear-gradient(135deg, #ffcc00, #ff9966)';
+            weatherIcon.src = 'https://cdn-icons-png.flaticon.com/128/606/606795.png'; // Замените на реальный URL
+        } else if (weather === 'rain' || weather === 'drizzle') {
+            document.body.style.background = 'linear-gradient(135deg, #00c6ff, #0072ff)';
+            weatherIcon.src = 'https://cdn-icons-png.flaticon.com/128/4161/4161216.png'; // Замените на реальный URL
+        } else if (weather === 'thunderstorm') {
+            document.body.style.background = 'linear-gradient(135deg, #4b79a1, #283E51)';
+            weatherIcon.src = 'https://cdn-icons-png.flaticon.com/128/1585/1585369.png'; // Замените на реальный URL
+        } else {
+            document.body.style.background = 'linear-gradient(135deg, #6a11cb, #2575fc)';
+            weatherIcon.src = 'https://cdn-icons-png.flaticon.com/128/4899/4899782.png'; // Замените на реальный URL
+        }
+    }
+
+    updateWeather();
+    setInterval(updateWeather, 5000); // Обновление каждые 5 секунд
+</script>
+
+</body>
+</html>

@@ -7,81 +7,45 @@
     <style>
         body {
             display: flex;
-            flex-direction: column;
             justify-content: center;
             align-items: center;
             height: 100vh;
             margin: 0;
+            background: linear-gradient(135deg, #ffcc00, #ff9966);
             font-family: Arial, sans-serif;
-            transition: background 0.5s;
-            color: white;
         }
-
-        .weather-container {
-            text-align: center;
+        .weather-widget {
             border: 2px solid white;
             border-radius: 20px;
             padding: 20px;
             background: rgba(0, 0, 0, 0.5);
             box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
-        }
-
-        img {
-            width: 150px;
-            height: auto;
-            margin: 10px 0;
+            color: white;
+            text-align: center;
         }
     </style>
+    <script src="https://yastatic.net/weather/i/26242.js" async></script>
 </head>
 <body>
 
-<div class="weather-container">
-    <h1>Погода в Каменск-Уральском</h1>
-    <img id="weather-icon" src="" alt="Погода">
-    <p id="weather-description"></p>
-    <p id="temperature"></p>
+<div class="weather-widget">
+    <div id="yandex-weather" data-city="Каменск-Уральский" data-key="0237f9a4-3784-4e90-3cc6-1e98d33a3045" data-format="full" data-id="1"></div>
+    <p>Погода будет обновляться каждые 10 секунд.</p>
 </div>
 
 <script>
-    const apiKey = 'cd0d7ec8d086c6aa9f7698eafa163fdb'; // Замените на ваш API ключ
-    const city = 'Каменск-Уральский';
-    const weatherContainer = document.querySelector('.weather-container');
-    const weatherIcon = document.getElementById('weather-icon');
-    const weatherDescription = document.getElementById('weather-description');
-    const temperature = document.getElementById('temperature');
-
-    function updateWeather() {
-        fetch(`https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}&units=metric`)
-            .then(response => response.json())
-            .then(data => {
-                const temp = Math.round(data.main.temp);
-                const weather = data.weather[0].main.toLowerCase();
-                updateUI(temp, weather);
-            })
-            .catch(err => console.error(err));
+    function reloadWeather() {
+        const weatherWidget = document.getElementById('yandex-weather');
+        weatherWidget.innerHTML = '';  // Очистить содержимое
+        weatherWidget.setAttribute('data-city', 'Каменск-Уральский'); // Замените на нужный город
+        document.querySelector("script[src*='yastatic.net/weather/']").parentNode.removeChild(document.querySelector("script[src*='yastatic.net/weather/']"));
+        const newScript = document.createElement('script');
+        newScript.src = "https://yastatic.net/weather/i/26242.js";
+        newScript.async = true;
+        document.body.appendChild(newScript);
     }
 
-    function updateUI(temp, weather) {
-        temperature.innerHTML = `Температура: ${temp}°C`;
-        weatherDescription.innerHTML = `Погодные условия: ${weather}`;
-
-        if (weather === 'clear') {
-            document.body.style.background = 'linear-gradient(135deg, #ffcc00, #ff9966)';
-            weatherIcon.src = 'https://cdn-icons-png.flaticon.com/128/606/606795.png'; // Замените на реальный URL
-        } else if (weather === 'rain' || weather === 'drizzle') {
-            document.body.style.background = 'linear-gradient(135deg, #00c6ff, #0072ff)';
-            weatherIcon.src = 'https://cdn-icons-png.flaticon.com/128/4161/4161216.png'; // Замените на реальный URL
-        } else if (weather === 'thunderstorm') {
-            document.body.style.background = 'linear-gradient(135deg, #4b79a1, #283E51)';
-            weatherIcon.src = 'https://cdn-icons-png.flaticon.com/128/1585/1585369.png'; // Замените на реальный URL
-        } else {
-            document.body.style.background = 'linear-gradient(135deg, #6a11cb, #2575fc)';
-            weatherIcon.src = 'https://cdn-icons-png.flaticon.com/128/4899/4899782.png'; // Замените на реальный URL
-        }
-    }
-
-    updateWeather();
-    setInterval(updateWeather, 5000); // Обновление каждые 5 секунд
+    setInterval(reloadWeather, 10000); // Обновление каждые 10 секунд
 </script>
 
 </body>

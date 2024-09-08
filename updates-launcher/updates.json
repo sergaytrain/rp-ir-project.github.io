@@ -1,0 +1,14 @@
+{
+  "files": [
+    {
+      "name": "EP2D.rar",
+      "version": "1.0.1",
+      "url": "googledrive.com"
+    },
+    {
+      "name": "example2.dll",
+      "version": "1.2.3",
+      "url": "https://yourhost.com/path/to/example2.dll"
+    }
+  ]
+}
